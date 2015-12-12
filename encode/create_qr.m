@@ -7,10 +7,11 @@ size = 21;
 error_code_version = 'H';
 
 % Fixed Patterns, on inverse les 1 et 0 pour faire le or logique
+fixed_patterns = ~(or(~finder_pattern(), ~timing_pattern()));
+all_patterns = ~(or(~fixed_patterns, ~format_string()));
 % Le Dark Module est un point noir placé en 8 en abcisse
 % et la version du QR x 4 + 9 en ordonnée
-fixed_patterns = ~(or(~finder_pattern(), ~timing_pattern()));
-fixed_patterns(14, 9) = 0;
+all_patterns(14, 9) = 0;
 
 % Affiche le code QR.
-img = imshow(fixed_patterns, 'InitialMagnification','fit');
+img = imshow(all_patterns, 'InitialMagnification','fit');
