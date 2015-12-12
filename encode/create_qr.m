@@ -10,7 +10,8 @@ error_code_version = 'H';
 str = input('chaine : ', 's');
 
 % Encodage de la chaine
-data_encode(str);
+message_bytes = data_encode(str);
+error_correction_bytes = error_correction_encode(message_bytes);
 
 % Fixed Patterns, on inverse les 1 et 0 pour faire le or logique
 fixed_patterns = ~(or(~finder_pattern(), ~timing_pattern()));

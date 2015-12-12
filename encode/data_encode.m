@@ -117,6 +117,7 @@ end
 
 % Affiche la chaine de données
 function print_bytes(data_bytes)
+    fprintf('%s', 'Message data : ');
     for i = 1:length(data_bytes)
         % On sépare par octet de données
         if i > 1 && rem(i, 8) == 1
