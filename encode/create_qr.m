@@ -6,6 +6,12 @@ size = 21;
 % 30% de correction d'erreur
 error_code_version = 'H';
 
+% Input de la chaine alphanumérique par l'utilisateur
+str = input('chaine : ', 's');
+
+% Encodage de la chaine
+data_encode(str);
+
 % Fixed Patterns, on inverse les 1 et 0 pour faire le or logique
 fixed_patterns = ~(or(~finder_pattern(), ~timing_pattern()));
 all_patterns = ~(or(~fixed_patterns, ~format_string()));
