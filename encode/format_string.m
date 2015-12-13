@@ -1,5 +1,5 @@
 % Applique le Format String
-%  Le format string dépend de la version de la
+%  Le format string utilise l'encodage BCH qui dépend de la version de la
 %  correction d'erreurs utilisée et du masque utilisé
 %  une explication détaillée est disponible à 
 %  http://www.thonky.com/qr-code-tutorial/format-version-information

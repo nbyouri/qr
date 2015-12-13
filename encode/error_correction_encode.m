@@ -19,7 +19,7 @@ function [error_bytes] = get_error_correction_blocks(bytes)
     str = num2str(bytes);
     [status, cmdout] = system(sprintf('./ecc.sh %s', str));
     if status == 1
-        error('Échec de du lancement du shell script.');
+        error('Échec du lancement du shell script.');
     end
     ecc_numbers = textscan(cmdout, '%d %*1d');
     ecc_numbers = ecc_numbers{1}';

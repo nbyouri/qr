@@ -1,5 +1,5 @@
 % La séquence de bits de données utilisateur contient le mode
-% mode = 0010 en mode alphanumérique (0->9, a->z, ...) sur 4 bits
+% mode = 0100 , mode byte sur 4 bits
 % et le nombre de caractères du message, maximum 10 pour QRv1
 % 'ephec' = 000000101, sur 9 bits
 % puis sont les caractères, somme des valeurs numériques de couples de caractères 
@@ -15,51 +15,43 @@
 % La spécification QR indique que la chaine de padding finale doit être
 % 11101100 00010001.
 function [ data_bytes ] = data_encode(string)  
-    validate_alphanum(string);
- 
     % Le tableau de bits de data de 72 caractères
     data_bytes = sprintf('%072d', 0);
     
     % Le mode 2 alphanumérique doit être représenté en binaire sur 4 bits
-    mode = dec2bin(2,4);
+    mode = dec2bin(4,4);
     for i = 1:4
        data_bytes(i) = mode(i);
     end
     
     % Le nombre de caractères du message doit être représenté sur 9 bits
-    nbcar = dec2bin(length(string), 9);
+    nbcar = dec2bin(length(string), 8);
     j = 1;
-    for i = 5:13
+    for i = 5:12
         data_bytes(i) = nbcar(j);
         j = j + 1;
     end
     
     % Calcul du message avec les valeurs alphanumériques comme expliqué au
     % début du fichier
-    alphanum_values = zeros(1, ceil(length(string)/ 2));
+    ascii_values = zeros(1, length(string));
     
-    j = 1;
-    for i = 1:2:length(string)
-        if rem(length(string), 2) == 1 && i == length(string)
-            alphanum_values(j) = ((get_alphanumeric_value(string(i))) * 45);
-        else
-            alphanum_values(j) = ((get_alphanumeric_value(string(i))) * 45) + get_alphanumeric_value(string(i + 1));
-        end
-        j = j + 1;
+    for i = 1:length(string)
+        ascii_values(i) = get_ascii_value(string(i));
     end
-        
-    % Insertion des bits du message sur 11 bits par couple de caractères à
+            
+    % Insertion des bits du message sur 8 bits par couple de caractères à
     % partir de la position 14, après le mode et ncar
     j = 1;
     k = 1;
-    for i = 1:(11*length(alphanum_values))
-        bin = dec2bin(alphanum_values(j), 11);
-        data_bytes(13 + i) = bin(k);
+    for i = 1:(8*length(ascii_values))
+        bin = dec2bin(ascii_values(j), 8);
+        data_bytes(12 + i) = bin(k);
         k = k + 1;
    
-        % Tous les multiples de 11, on passe au prochain couple de
+        % Tous les multiples de 8, on passe au prochain couple de
         % caractères du message
-        if rem(k, 11) == 1
+        if rem(k, 8) == 1
             j = j + 1;
             k = 1;
         end
@@ -76,7 +68,9 @@ function [ data_bytes ] = data_encode(string)
             position = position + 1;
         end
     end
-        
+    
+    position = position - 1;
+    
     % Ajout de 0 jusqu'a ce que la position soit un multiple de 8
     while mod(position, 8) ~= 0
         % Attention à ne pas dépasser le nombre max de données pour notre
@@ -109,9 +103,9 @@ end
 % Tableau de valeurs alphanumériques, find(alphanum == 'X') - 1 retourne
 % l'index qui représente la valeur numérique, pas de distinction entre
 % lettres minuscules/majuscules
-function x = get_alphanumeric_value(c)
-    alphanum = ['0':'9', 'a':'z', ' ', '$', '%', '*', '+', '-', '.', '/', ':'];
-    x = (find(alphanum == lower(c)) - 1);
+function x = get_ascii_value(c)
+    hex = sprintf('%x', c);
+    x = hex2dec(hex);
 end
 
 
@@ -126,15 +120,4 @@ function print_bytes(data_bytes)
         fprintf('%c', data_bytes(i));
     end
     fprintf('\n');
-end
-
-% Valide la chaine en entrée
-function validate_alphanum(string)
-    alphanum = ['0':'9', 'a':'z', ' ', '$', '%', '*', '+', '-', '.', '/', ':'];
-    for i = 1:length(string)
-        result = find(alphanum == string(i));
-        if isempty(result)
-            error('Chaine pas entièrement alphanumérique!');
-        end
-    end
 end
