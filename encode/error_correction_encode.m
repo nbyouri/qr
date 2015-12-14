@@ -4,9 +4,12 @@
 % contenues dans l'encodage du message.
 function [ error_correction_bytes ] = error_correction_encode(string)
     message_data = str2bytes2dec(string);
-    error_correction_bytes = get_error_correction_blocks(message_data);
-    fprintf('ECC numbers : ');
-    disp(error_correction_bytes);
+    ecc = get_error_correction_blocks(message_data);
+    % cells of strings -> string
+    ecc = strjoin(ecc);
+    % enlève les espaces
+    error_correction_bytes = ecc(~isspace(ecc));
+    print_bytes(error_correction_bytes);
 end
 
 % Récupère les blocs de correction d'erreurs par la division polynomiale
@@ -50,6 +53,27 @@ function [ decbytes ] = str2bytes2dec(string)
         bytes(j) = bin2dec(byte);
         k = k + 1;
     end
-    
     decbytes = bytes;
+end
+
+% Affiche la chaine de données
+function print_bytes(data_bytes)
+    fprintf('%s', 'ECC data base02 : ');
+    for i = 1:length(data_bytes)
+        % On sépare par octet de données
+        if i > 1 && rem(i, 8) == 1
+            fprintf(' ');
+        end
+        fprintf('%c', data_bytes(i));
+    end
+    fprintf('\n');
+    fprintf('%s', 'ECC data base10 : ');
+    for i = 1:17
+        byte = '00000000';
+        for j = 1:8
+            byte(j) = data_bytes(((i * 8) - 8) + j);
+        end
+        fprintf('%d ', bin2dec(byte));
+    end
+    fprintf('\n');
 end

@@ -2,19 +2,7 @@
 % En QRv1-H on à 9 bytes de message et 17 bytes de correction d'erreurs
 % Les données sont agencées comme le montre docs/bytes_disposition.png
 % 
-function [ grid ] = embed_data(mat)
-    
-    % Fixed Patterns, on inverse les 1 et 0 pour faire le or logique
-    %fixed_patterns = ~(or(~finder_pattern(), ~timing_pattern()));
-    %mat = ~(or(~fixed_patterns, ~format_string()));
-    % Le Dark Module est un point noir placé en 8 en abcisse
-    % et la version du QR x 4 + 9 en ordonnée
-    mat = ones(21);
-    mat(14, 9) = 0;
-    
-    msg_data = data_encode('ephec');
-    ec_data = error_correction_encode(msg_data);
-    
+function [ grid ] = embed_data(mat, msg_data, ec_data)
     % Blocs de données. 9 blocs de 8 bits, incluant le mode, le nombre de 
     % caractères et le end block. On accède aux cellules de la matrice en
     % abcisse puis en ordonnée. On commence par le premier byte en bas à droite
@@ -81,17 +69,26 @@ function [ grid ] = embed_data(mat)
     %   Direction horizontale par le bas
     %       Bloc de données 6.5/26 : D5
     y = 21;
-    for x = [ 19 17 ]
-        mat(y,x) = get_bit(msg_data, cbit);
-        cbit = cbit + 1;
-        mat(y,x-1) = get_bit(msg_data, cbit);
-        cbit = cbit + 1;
-        mat(y-1,x) = get_bit(msg_data, cbit);
-        cbit = cbit + 1;
-        mat(y-1,x-1) = get_bit(msg_data, cbit);
-        cbit = cbit + 1;
-    end
+    x = 19;
+    mat(y-1,x) = get_bit(msg_data, cbit);
+    cbit = cbit + 1;
+    mat(y-1,x-1) = get_bit(msg_data, cbit);
+    cbit = cbit + 1;
+    mat(y,x) = get_bit(msg_data, cbit);
+    cbit = cbit + 1;
+    mat(y,x-1) = get_bit(msg_data, cbit);
+    cbit = cbit + 1;
     
+    x = 17;
+    mat(y,x) = get_bit(msg_data, cbit);
+    cbit = cbit + 1;
+    mat(y,x-1) = get_bit(msg_data, cbit);
+    cbit = cbit + 1;
+    mat(y-1,x) = get_bit(msg_data, cbit);
+    cbit = cbit + 1;
+    mat(y-1,x-1) = get_bit(msg_data, cbit);
+    cbit = cbit + 1;
+        
     %   Direction upwards
     %       Bloc de données 7.5/26 : D6
     for y = 19:-1:16
@@ -191,10 +188,15 @@ function [ grid ] = embed_data(mat)
         cbit = cbit + 1;
     end
     
+    %   Inversion des bits du champs supérieur
+    %   XXX börk
+    for y = 1:6
+        for x = 10:13
+            mat(y,x) = ~mat(y,x);
+        end
+    end
     
-    
-    % Affiche le code QR.
-    img = imshow(mat, 'InitialMagnification','fit');
+    grid = mat;
 end
 
 % Récupère un bit de la chaine de données en bit

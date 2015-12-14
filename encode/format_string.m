@@ -3,7 +3,7 @@
 %  correction d'erreurs utilisée et du masque utilisé
 %  une explication détaillée est disponible à 
 %  http://www.thonky.com/qr-code-tutorial/format-version-information
-function matrix = format_string()
+function matrix = format_string(type)
     matrix = ones(21);
     H_0 = [ 0 0 1 0 1 1 0 1 0 0 0 1 0 0 1 ];
     H_1 = [	0 0 1 0 0 1 1 1 0 1 1 1 1 1 0 ];
@@ -14,11 +14,31 @@ function matrix = format_string()
     H_6 = [ 0 0 0 1 1 0 1 0 0 0 0 1 1 0 0 ];
     H_7	= [ 0 0 0 1 0 0 0 0 0 1 1 1 0 1 1 ];
     
+    switch type
+        case 0
+            mask = H_0;
+        case 1
+            mask = H_1;
+        case 2
+            mask = H_2;
+        case 3
+            mask = H_3;
+        case 4
+            mask = H_4;
+        case 5
+            mask = H_5;
+        case 6
+            mask = H_6;
+        case 7
+            mask = H_7;
+        otherwise
+            mask = H_1;
+    end
     %  Disposition du format string sur la matrice,
-    %  voir http://www.thonky.com/qr-code-tutorial/format-layout.png
+    %  voir docs/bytes_disposition.png
     %   Partie 1
     %    Partie de droite
-    format = ~fliplr(H_1);
+    format = ~fliplr(mask);
     for i = 1:6
         matrix(i, 9) = format(i);
     end
