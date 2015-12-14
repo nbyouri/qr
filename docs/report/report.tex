@@ -103,7 +103,7 @@
 		Nous avons pour cette étape de détection et extraction, utilisé une application en C++ utilisant la librairie OpenCV.\\
 		Cet extracteur se base sur l'utilisation d'une caméra et détecte dans le flux vidéo la présence du QRCode.\\
 
-		Le choix d'utiliser une application tierse pour cette étape est déliberée, cette fonctionnalité nécéssite une connaissance très poussée de traitement de l'image ainsi que d'outils mathématiques et de la façon d'intégrer ceux-ci.\\
+		Le choix d'utiliser une application tierce pour cette étape est déliberée, cette fonctionnalité nécéssite une connaissance très poussée de traitement de l'image ainsi que d'outils mathématiques et de la façon d'intégrer ceux-ci.\\
 
 		Nous allons donc présenter et expliquer ici les différentes étapes qui mènent à la capture du Code.\\
 
@@ -255,6 +255,30 @@
 
 \chapter{Conclusion}
 
+	\section{Pistes d'améliorations}
+
+		Une possible amélioration majeure que nous pourrions ajouter à notre projet, est un traitement d'une image afin de retrouver le QR Code dans elle-ci, traitement qui aurait été programmé par nos soins.\\
+		De même pour un traitement et capture du QRCode dans une vidéo, étant donné que nous utilisons actuellement un programme tiers pour cette capture.\\
+
+		Une autre possibilité d'amélioration serait une prise en charge de différentes versions de QR Code, ainsi que différents niveaux de correction d'erreurs et différents encodages.\\
+
+	\section{FeedBack Personnels}
+
+		\subsection{Youri Mouton}
+
+		\subsection{Jonathan Seynaeve}
+
+		\subsection{Samuel Monroe}
+
+			Sur ce projet, j'ai surtout travaillé quant à la partie acquisition du QRCode, traitement de l'image obtenue afin de la transformer en matrice utilisable pour le décodage, ainsi qu'à la rédaction du rapport et du support de présentation du projet.\\
+
+			J'aurais aimé créer une solution originale de capture du QRCode, soit via processing d'une image, soit via processing d'une vidéo.\\
+			Néanmois, je suis satisfait du travail accompli par l'ensemble du groupe, et que nous ayons parcouru de manière relativement complète ce travail d'analyse du QR Code.\\
+
+		\subsection{Nicolas Sias}
+
+	\section{Conclusion}
+
 	Ce projet a été une bonne expérience et nous a permis de progresser de manière générale dans le cours, nous avons également pu nous rendre compte de la complexité qui peut se cacher derrière un simple code QR, des outils mathématiques qui interviennent dans la génération et le décodage de celui-ci, ainsi que des diverses opérations utiles pour détecter un code dans une image.\\
 
 \chapter{Bibliographie}
@@ -262,7 +286,7 @@
 	\begin{itemize}
 		\item Thonky - Génération de QR Code - \textbf{http://www.thonky.com/qr-code-tutorial/}
 		\item OpenCV - Capture de QrCode - \textbf{http://dsynflo.blogspot.in/2014/10/opencv-qr-code-detection-and-extraction.html}
-		\item Groupe de Galois - \textbf{https://fr.wikipedia.org/wiki/Groupe_de_Galois}
+		\item Groupe de Galois - \textbf{https://fr.wikipedia.org/wiki/Groupe\_de\_Galois}
 		\item QRCode - \textbf{http://www-igm.univ-mlv.fr/~dr/XPOSE2011/QRCode/index.html#1}
 		\item Repository Github - \textbf{https://github.com/yrmt/qr}
 	\end{itemize}
