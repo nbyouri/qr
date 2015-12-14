@@ -3,7 +3,7 @@
 % et le nombre de caractères du message, maximum 7 pour QRv1
 % 'ephec' = 00000101, sur 8 bits
 % puis sont les caractères, valeur numérique ascii
-% 'ep' = 01000000, 'he' = 01010110, 'c' = 01010111', sur 8 bits
+% 'e' = '01100101' sur 8 bits
 % la table ascii: http://www.asciitable.com/
 % on rajoute ensuite un terminator de 0 à 4 0 pour compléter le byte
 % On rajoute ensuite une chaine de padding jusqu'a ce que la chaine de données
