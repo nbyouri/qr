@@ -5,8 +5,7 @@
 % puis sont les caractères, valeur numérique ascii
 % 'ep' = 01000000, 'he' = 01010110, 'c' = 01010111', sur 8 bits
 % la table ascii: http://www.asciitable.com/
-% on rajoute ensuite un terminator de 0000 si la chaine de données est plus
-% de 4 bits de trop peu.
+% on rajoute ensuite un terminator de 0 à 4 0 pour compléter le byte
 % On rajoute ensuite une chaine de padding jusqu'a ce que la chaine de données
 % soit pleine, pour le QRv1-H, c'est 72 bits. 
 % La spécification QR indique que la chaine de padding final doit être
@@ -95,6 +94,7 @@ function [ data_bytes ] = data_encode(string)
     end
        
     print_bytes(data_bytes);
+    get_dec_bytes(data_bytes);
 end
 
 % Retourne la valeur numérique d'un caractère ASCII
@@ -106,13 +106,26 @@ end
 
 % Affiche la chaine de données
 function print_bytes(data_bytes)
-    fprintf('%s', 'Message data : ');
+    fprintf('%s', 'Message data base02 : ');
     for i = 1:length(data_bytes)
         % On sépare par octet de données
         if i > 1 && rem(i, 8) == 1
             fprintf(' ');
         end
         fprintf('%c', data_bytes(i));
+    end
+    fprintf('\n');
+end
+
+% Extrait des décimales de bytes de la chaine
+function get_dec_bytes(data_bytes)
+    fprintf('%s', 'Message data base10 : ');
+    for i = 1:9
+        binstr = '00000000';
+        for j = 1:8
+            binstr(j) = data_bytes(((i * 8) - 8) + j);
+        end
+        fprintf('%d ', bin2dec(binstr));
     end
     fprintf('\n');
 end

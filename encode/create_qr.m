@@ -10,15 +10,18 @@ error_code_version = 'H';
 str = input('chaine : ', 's');
 
 % Encodage de la chaine
-message_bytes = data_encode(str);
-error_correction_bytes = error_correction_encode(message_bytes);
+msg_data = data_encode(str);
+ec_data = error_correction_encode(msg_data);
 
 % Fixed Patterns, on inverse les 1 et 0 pour faire le or logique
 fixed_patterns = ~(or(~finder_pattern(), ~timing_pattern()));
-all_patterns = ~(or(~fixed_patterns, ~format_string()));
+patterns = ~(or(~fixed_patterns, ~format_string(1)));
+data = embed_data(all_patterns, msg_data, ec_data);
+all = ~(or(~patterns, ~data));
+
 % Le Dark Module est un point noir placé en 8 en abcisse
 % et la version du QR x 4 + 9 en ordonnée
-all_patterns(14, 9) = 0;
+all(14, 9) = 0;
 
 % Affiche le code QR.
-img = imshow(all_patterns, 'InitialMagnification','fit');
+imshow(mask(all), 'InitialMagnification','fit');
