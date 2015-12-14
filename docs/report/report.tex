@@ -34,7 +34,7 @@
 \renewcommand\appendixpagename{Annexes}
 
 \title{}
-\author{Nicolas \bsc{Sias}, Youri \bsc{Mouton}, Samuel \bsc{Monroe}}
+\author{Jonathan \bsc{Seynaeve}, Nicolas \bsc{Sias}, Youri \bsc{Mouton}, Samuel \bsc{Monroe}}
 
 \date{30 Mai 2015}
 
@@ -210,10 +210,9 @@
 
 	\section{Encodage des données}
 
-		La séquence de bits de données utilisateur contient le mode = 0100 , mode byte sur 4 bits et le nombre de caractères du message est de maximum 7 pour ce QRv1 en mode byte.\\
-		Notre message exemple est 'ephec', représenté par 00000101 sur 8 bits.\\
+		La séquence de bits de données utilisateur contient le mode = 0100 , mode byte sur 4 bits et le nombre de caractères du message est de maximum 7 pour ce QRv1 en mode byte. Le nombre de caractères est représenté sur 8 bits.\\
 
-		On découpe ensuite notre message en couple de caractère et leur accordons une valeur selon la table ascii : 'ep' = 01000000, 'he' = 01010110, 'c' = 01010111', sur 8 bits.\\
+        Puis les caractères du message sont encodés par leur valeur numérique trouveée dans la table ASCII, représentés sur 8 bits. Par exemple, 'e' = '01100101'.
 
 		Il faut ensuite rajouter un terminateur de données de maximum quatres 0 si un byte n'est pas complété.\\
 
@@ -245,7 +244,9 @@
 
 		\includegraphics[scale=0.3]{bytes-disposition.png}\\
 
-		Notre programme utilise trois scripts MatLab qui vont successivement placer les marqueurs de positionnement, les séquences de timing, ainsi que les données.\\
+		Notre programme utilise trois scripts MatLab qui vont successivement placer les marqueurs de positionnement, les séquences de timing, ainsi que les données\\
+		
+		Un masque est ensuite appliqué, seulement aux données. L'implémentation de l'encodage QR ici ne supporte que le masque 1.
 
 		\subsection{Exportation du résultat final}
 
@@ -261,13 +262,21 @@
 		De même pour un traitement et capture du QRCode dans une vidéo, étant donné que nous utilisons actuellement un programme tiers pour cette capture.\\
 
 		Une autre possibilité d'amélioration serait une prise en charge de différentes versions de QR Code, ainsi que différents niveaux de correction d'erreurs et différents encodages.\\
+		
+		L'ajout du support des huit masques différents selon l'optimisation qu'ils apportent sur la matrice permettrait d'encore simplifier le décodage du code. L'utilisation du seul masque (1) n'as pas encore posé de problèmes.
 
 	\section{FeedBack Personnels}
 
 		\subsection{Youri Mouton}
+		
+		    Lors de ce projet, je me suis occupé de l'encodage du code QR, la version 1 avec correction d'erreurs à 30\% et le masque 1. Tout cela  a été réalisé en 600 lignes de code Matlab que j'ai écrit avec l'aide de la spécification QR trouvée en ligne. J'ai également créé une image explicative permettant de mieux comprendre la disposition des données sur la matrice, afin que d'autres passent moins de temps que moi à comprenre le fonctionnement de l'encodage.\\
+		    
+		    Ce projet a aussi été une occasion de beaucoup apprendre sur l'utilisation de matlab et ma curiosité sur les code QR est comblée.  Le travail a été réalisé en équipe de manière assez uniforme à mon gout.\\
 
 		\subsection{Jonathan Seynaeve}
 
+			La compréhension du fonctionnement, de la détection et de l'utilisation d'un QRcode fut assez complexe pour moi. Une fois celle-ci intégrée, j'ai pu, par la suite, aider Nicolas au niveau du décodage de la matrice du QRcode en elle-même. Ma participation a été un peu faible, je dois l'admettre, même si, j'ai pu apprendre pas mal de chose, notamment au niveau de l'utilisation de MatLab ainsi que la complexité d'élaboration d'un QR code.\\
+		
 		\subsection{Samuel Monroe}
 
 			Sur ce projet, j'ai surtout travaillé quant à la partie acquisition du QRCode, traitement de l'image obtenue afin de la transformer en matrice utilisable pour le décodage, ainsi qu'à la rédaction du rapport et du support de présentation du projet.\\
@@ -276,6 +285,8 @@
 			Néanmois, je suis satisfait du travail accompli par l'ensemble du groupe, et que nous ayons parcouru de manière relativement complète ce travail d'analyse du QR Code.\\
 
 		\subsection{Nicolas Sias}
+		
+		    Sur ce projet, j’ai travaillé principalement sur le décodage ainsi que l’erreur de correction d’un QR Code (création et lecture de ce dernier). L’algorithme Reed-Solomon a été une des plus grandes difficultés à résoudre pour ce projet. En effet, comprendre ce dernier afin de mieux l’exploiter demandait de nouvelles notions mathématiques comme le message polynomial, le générateur polynomial dont le corps fini (le « Galois field ») qui est nécessaire à ce dernier. Je comprends en général comment ce dernier fonctionne, mais je dois avouer que je ne pourrais pas expliquer en profondeur ce dernier, à cause du générateur polynomial. J’aurais aimé pouvoir comprendre au mieux l’algorithme qui, pour moi, reste le plus gros challenge mathématique d’un QR code.
 
 	\section{Conclusion}
 
