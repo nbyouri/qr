@@ -1,30 +1,27 @@
 % La séquence de bits de données utilisateur contient le mode
 % mode = 0100 , mode byte sur 4 bits
-% et le nombre de caractères du message, maximum 10 pour QRv1
-% 'ephec' = 000000101, sur 9 bits
-% puis sont les caractères, somme des valeurs numériques de couples de caractères 
-% 'ep' = (14x45+25), 'he' = (17x45+14), 'c' = (12x45+0)
-% 45 fait partie de la spécification QR.
-% 'ep' = 01010001111, 'he' = 01100001011, 'c' = 01000011100', sur 11 bits
-% la table des valeurs alphanumériques: http://www.thonky.com/qr-code-tutorial/alphanumeric-table
+% et le nombre de caractères du message, maximum 7 pour QRv1
+% 'ephec' = 00000101, sur 8 bits
+% puis sont les caractères, valeur numérique ascii
+% 'ep' = 01000000, 'he' = 01010110, 'c' = 01010111', sur 8 bits
+% la table ascii: http://www.asciitable.com/
 % on rajoute ensuite un terminator de 0000 si la chaine de données est plus
 % de 4 bits de trop peu.
-% puis en rajoute des 0 jusqu'a ce que la chaine soit un multiple de 8
-% Puis on rajoute une chaine de padding jusqu'a ce que la chaine de données
+% On rajoute ensuite une chaine de padding jusqu'a ce que la chaine de données
 % soit pleine, pour le QRv1-H, c'est 72 bits. 
-% La spécification QR indique que la chaine de padding finale doit être
+% La spécification QR indique que la chaine de padding final doit être
 % 11101100 00010001.
 function [ data_bytes ] = data_encode(string)  
     % Le tableau de bits de data de 72 caractères
     data_bytes = sprintf('%072d', 0);
     
-    % Le mode 2 alphanumérique doit être représenté en binaire sur 4 bits
+    % Le mode 4 byte doit être représenté en binaire sur 4 bits
     mode = dec2bin(4,4);
     for i = 1:4
        data_bytes(i) = mode(i);
     end
     
-    % Le nombre de caractères du message doit être représenté sur 9 bits
+    % Le nombre de caractères du message doit être représenté sur 8 bits
     nbcar = dec2bin(length(string), 8);
     j = 1;
     for i = 5:12
@@ -100,9 +97,7 @@ function [ data_bytes ] = data_encode(string)
     print_bytes(data_bytes);
 end
 
-% Tableau de valeurs alphanumériques, find(alphanum == 'X') - 1 retourne
-% l'index qui représente la valeur numérique, pas de distinction entre
-% lettres minuscules/majuscules
+% Retourne la valeur numérique d'un caractère ASCII
 function x = get_ascii_value(c)
     hex = sprintf('%x', c);
     x = hex2dec(hex);
