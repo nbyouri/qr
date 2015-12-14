@@ -1,0 +1,3 @@
+[submodule "decode/opencv_qr"]
+	path = decode/opencv_qr
+	url = https://github.com/bharathp666/opencv_qr
