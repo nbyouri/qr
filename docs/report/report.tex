@@ -193,6 +193,19 @@
 
 		\subsection{Décodage de la matrice}
 
+			La plupart des concepts abordés dans ce décodage sont explorées dans la partie du codeur, nous resterons ici lacunaires sur leur fonctionnement.\\
+			La partie décodage de la matrice se réalise en plusieurs étapes, comporables au codage dans le sens inverse, elle va consister en : \\
+
+			\begin{itemize}
+				\item Application du masque sur la matrice
+				\item Récupération des données dans le même sens de leur placement à l'encodage
+				\item Découpe des données en bloc utile
+				\item Données converties en ASCII
+				\item Reed-Solomon en sens inverse
+				\item Application de la correction d'erreur
+				\item Récupération du message
+			\end{itemize}
+
 
 \chapter{Codeur de QRCode}
 	
