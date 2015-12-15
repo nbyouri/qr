@@ -197,11 +197,11 @@
 		        La partie décodage de la matrice se réalise en plusieurs étapes, comporables au codage dans le sens inverse, elle va consister en : \\
 
 			\begin{itemize}
-				\item Application du masque sur la matrice
-				\item Récupération des données dans le même sens de leur placement à l'encodage
-				\item Découpe des données en bloc utile
-				\item Données converties en ASCII
-				\item Reed-Solomon en sens inverse
+				\item Application du masque sur la matrice : La méthode est exactement la même qu’à l’encodage : il suffit d’appliquer le masque correspondant au QR code donné , en regardant le string format autour des fixed pattern.\\
+				\item Récupération des données dans le même sens de leur placement à l'encodage : Au lieu d’inscrire bit à bit dans le QR code,  il suffit, cette fois-ci de récupérer chaque bit dans le même sens que l’encodage. Une chaine binaire contiendra l’ensemble des données du QR ( le type de message, sa longueur, le message et les erreurs de corrections).\\
+				\item Découpe des données en bloc utile : Nous devons remettre en binaire la matrice donnée par Reed-Solomon, nous reprendrons ainsi les 4 premiers bits pour vérifier le type du message, les 8 suivants pour la longueur et de 9 à ncar les bits à lire pour trouver enfin notre message.\\
+				\item Données converties en ASCII : Après avoir pris uniquement la chaine binaire de message, nous devons la couper, octet par octet , afin de la convertir en ASCII et trouver enfin notre message.\\
+				\item Reed-Solomon en sens inverse : Le but de Reed-Solomon est d’éviter les erreurs de lecture, c’est ici qu’il va rentrer en jeu. En faisait le procédé inverse de l’algorithme, nous obtiendrons les données sous forme d’une matrice [1 ; ncar] avec ncar le nombre de caractère à lire dans ce message.\\
 				\item Application de la correction d'erreur
 				\item Récupération du message
 			\end{itemize}
