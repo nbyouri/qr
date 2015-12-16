@@ -9,7 +9,15 @@ error_code_version = 'H';
 mask_version = 1;
 
 % Input de la chaine alphanumérique par l'utilisateur
-str = input('chaine [1:7]: ', 's');
+%str = input('chaine [1:7]: ', 's');
+prompt = 'chaine [1:7]';
+dlg_title = 'Code QR';
+num_lines = 1;
+defaultans = {'ephec'};
+
+str = inputdlg(prompt, dlg_title, num_lines, defaultans);
+str = str{1};
+
 if length(str) > 7
     error('Chaine trop longue!');
 end
